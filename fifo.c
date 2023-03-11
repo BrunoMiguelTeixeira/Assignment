@@ -1,6 +1,7 @@
 
 #include "fifo.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 int MyFIFOInit(void* fifo, int size)
 {
