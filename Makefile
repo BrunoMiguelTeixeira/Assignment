@@ -1,11 +1,10 @@
-# This is a comment
-# Generate application
+# Generation of executable 
 
 main: main.o fifo.o
 	gcc -o fifo main.o fifo.o
 
-#generate part1.o
-fifo.o: fifo.c fifo.h
+#generate fifo.o
+fifo.o: fifo.c fifo.h 
 	gcc -c fifo.c
 
 #generate main.o
