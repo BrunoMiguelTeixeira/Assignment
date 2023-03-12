@@ -1,11 +1,15 @@
-
 #include "fifo.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-int MyFIFOInit(void* fifo, int size)
+#define MAX_FIFO_SIZE 10
+
+int MyFIFOInit(struct FIFO* fifo, int size)
 {
-	fifo->values = (void*)malloc(size*sizeof(int));
+	if((size<= 0)||(size>10))
+		return -1;
+	
+	fifo->values =  (int*)malloc(size*sizeof(int));
 	if (fifo->values == NULL){
 		return -1;	
 	}
@@ -16,29 +20,29 @@ int MyFIFOInit(void* fifo, int size)
 	return 0;
 }
 
-int MyFIFOInsert(void*fifo, int val);
+int MyFIFOInsert(struct FIFO*fifo, int val);
 
-int MyFIFORemove(void* fifo);
+int MyFIFORemove(struct FIFO* fifo);
 
-int MyFIFOPeep(void* fifo)
+int MyFIFOPeep(struct FIFO* fifo)
 {	
 	if (fifo->tail == fifo->head){
 		printf("Fifo is Empty!/n");
-		return -99;
 	}	
 		
-	return fifo->Values[head];
+	return fifo->values[fifo->head];
 }
 
-int MyFIFOSize(void* fifo)
+int MyFIFOSize(struct FIFO* fifo)
 {	
 	int fifoSize = 0;
+	
 	if (fifo->head < fifo->tail){
 			fifoSize = fifo->tail - fifo->head;
 	}
 	else{
 		fifoSize = -(fifo->tail - fifo->head);
-		}
+	}
 		
 	return fifoSize;
 }
