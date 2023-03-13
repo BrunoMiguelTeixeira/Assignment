@@ -16,6 +16,7 @@ struct FIFO{
 	int* values;/**< Array of stored values in fifo*/
 	int tail; 	/**< Position of newest fifo value */
 	int head;	/**< Position of oldest fifo value */
+    int count; /**< Number of stored values at a given time */
 	};
 
 /**
@@ -38,7 +39,7 @@ int MyFIFOInit(struct FIFO* fifo, int size);
  * \param val val to be inserted in the fifo
  */
 
-int MyFIFOInsert(struct FIFO* fifo, int val);
+void MyFIFOInsert(struct FIFO* fifo, int val);
 
 /**
  * \brief Remove function oldest value from queue
@@ -47,7 +48,7 @@ int MyFIFOInsert(struct FIFO* fifo, int val);
  * \param fifo structure address
  */
 
-int MyFIFORemove(struct FIFO* fifo);
+void MyFIFORemove(struct FIFO* fifo);
 
 /**
  * \brief Show oldest value in the fifo

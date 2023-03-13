@@ -3,48 +3,61 @@
 #include <stdlib.h>
 
 #define MAX_FIFO_SIZE 10
+int err=0;
 
 int MyFIFOInit(struct FIFO* fifo, int size)
 {
 	if((size<= 0)||(size>10))
-		return -1;
+		return err=-1;
 	
 	fifo->values =  (int*)malloc(size*sizeof(int));
 	if (fifo->values == NULL){
-		return -1;	
+		return err=-1;	
 	}
 	
 	fifo->size = size;
 	fifo->tail = 0;
 	fifo->head = 0;
-	return 0;
+	fifo->count = 0;
+	return err=0;
 }
 
-int MyFIFOInsert(struct FIFO*fifo, int val);
+void MyFIFOInsert(struct FIFO*fifo, int val)
+{
+	if(MyFIFOSize(fifo)==fifo->size){
+		err=-1;
+		return;
+	}
 
-int MyFIFORemove(struct FIFO* fifo);
+	fifo->values[fifo->head]=val;
+	fifo->head = (fifo->head +1)% fifo->size;
+	fifo->count=fifo->count+1;
+	err=0;
+}
+
+void MyFIFORemove(struct FIFO* fifo)
+{
+	if(MyFIFOSize(fifo)==0){
+		err=-1;
+		return;
+	}
+	fifo->tail = (fifo->tail+1) % fifo->size;
+	fifo->count=fifo->count-1;
+	err=0;
+}
 
 int MyFIFOPeep(struct FIFO* fifo)
 {	
 	if (fifo->tail == fifo->head){
-		printf("Fifo is Empty!/n");
+		return err=-1;
 	}	
-		
-	return fifo->values[fifo->head];
+	err=0;	
+	return fifo->values[fifo->tail];
 }
 
 int MyFIFOSize(struct FIFO* fifo)
 {	
-	int fifoSize = 0;
-	
-	if (fifo->head < fifo->tail){
-			fifoSize = fifo->tail - fifo->head;
-	}
-	else{
-		fifoSize = -(fifo->tail - fifo->head);
-	}
-		
-	return fifoSize;
+	return fifo->count;
 }
 
 
