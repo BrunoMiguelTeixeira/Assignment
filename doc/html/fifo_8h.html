@@ -89,11 +89,14 @@ Functions</h2></td></tr>
 <tr class="memdesc:a08af4087f87f683e05687e786260ec1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove function oldest value from queue.  <a href="fifo_8h.html#a08af4087f87f683e05687e786260ec1a">More...</a><br /></td></tr>
 <tr class="separator:a08af4087f87f683e05687e786260ec1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09617c9634b846fc3067596e7a8b2299"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8h.html#a09617c9634b846fc3067596e7a8b2299">MyFIFOPeep</a> (struct <a class="el" href="struct_f_i_f_o.html">FIFO</a> *fifo)</td></tr>
-<tr class="memdesc:a09617c9634b846fc3067596e7a8b2299"><td class="mdescLeft">&#160;</td><td class="mdescRight">Show oldest value in the fifo.  <a href="fifo_8h.html#a09617c9634b846fc3067596e7a8b2299">More...</a><br /></td></tr>
+<tr class="memdesc:a09617c9634b846fc3067596e7a8b2299"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints oldest value in the fifo.  <a href="fifo_8h.html#a09617c9634b846fc3067596e7a8b2299">More...</a><br /></td></tr>
 <tr class="separator:a09617c9634b846fc3067596e7a8b2299"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b8635e1c4cf52781478ec614a459acd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8h.html#a0b8635e1c4cf52781478ec614a459acd">MyFIFOSize</a> (struct <a class="el" href="struct_f_i_f_o.html">FIFO</a> *fifo)</td></tr>
 <tr class="memdesc:a0b8635e1c4cf52781478ec614a459acd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fifo queue size.  <a href="fifo_8h.html#a0b8635e1c4cf52781478ec614a459acd">More...</a><br /></td></tr>
 <tr class="separator:a0b8635e1c4cf52781478ec614a459acd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb0fe0b6a59ceaf05f8b83dd0805a123"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fifo_8h.html#afb0fe0b6a59ceaf05f8b83dd0805a123">MyFIFOResize</a> (struct <a class="el" href="struct_f_i_f_o.html">FIFO</a> *fifo, int newsize)</td></tr>
+<tr class="memdesc:afb0fe0b6a59ceaf05f8b83dd0805a123"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fifo resize.  <a href="fifo_8h.html#afb0fe0b6a59ceaf05f8b83dd0805a123">More...</a><br /></td></tr>
+<tr class="separator:afb0fe0b6a59ceaf05f8b83dd0805a123"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>Ines Leite </dd></dl>
@@ -126,7 +129,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Fifo initialization function. </p>
-<p>Intializes values vector with dinamic memory, initializes head and tail to 0 and size with fifo desired size; Maximum Size value is 10</p>
+<p>Intializes values vector with dinamic memory, initializes head, tail and counter to 0 and size with fifo desired size; Maximum Size value is 10</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">fifo</td><td>structure address </td></tr>
@@ -134,7 +137,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0: OK ; -1: Error </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0: OK ; 11 Error fifo size; -1: mem error == NULL </dd></dl>
 
 </div>
 </div>
@@ -172,6 +175,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>0: OK; -1 error fifo full </dd></dl>
 
 </div>
 </div>
@@ -191,14 +195,14 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Show oldest value in the fifo. </p>
+<p>Prints oldest value in the fifo. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">fifo</td><td>structure address </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>oldest value in the fifo </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 OK; -1 error fifo empty </dd></dl>
 
 </div>
 </div>
@@ -219,12 +223,53 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Remove function oldest value from queue. </p>
+<p>Prints value removed</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">fifo</td><td>structure address </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>0: OK; -1 error fifo empty </dd></dl>
+
+</div>
+</div>
+<a id="afb0fe0b6a59ceaf05f8b83dd0805a123"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb0fe0b6a59ceaf05f8b83dd0805a123">&#9670;&nbsp;</a></span>MyFIFOResize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MyFIFOResize </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="struct_f_i_f_o.html">FIFO</a> *&#160;</td>
+          <td class="paramname"><em>fifo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>newsize</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fifo resize. </p>
+<p>Resize fifo dinamically, trucates if shorter</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fifo</td><td>fifo structure address </td></tr>
+    <tr><td class="paramname">newsize</td><td>new fifo size </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0: OK ; 11 Error fifo size; -1 mem error == NULL </dd></dl>
 
 </div>
 </div>

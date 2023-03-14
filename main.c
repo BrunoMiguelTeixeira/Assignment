@@ -1,14 +1,13 @@
 #include <stdio.h>
 #include "fifo.h"
 
-extern int err;
 
 int main(void){	
 	int op, exit = 0;
-	int noFifo;
+	int noFifo, new_size;
 	
 	printf("No. of FIFO's to be created (max.5): ");
-	fscanf(stdin,"%d",&noFifo);
+	scanf("%d",&noFifo);
 	
 	while((noFifo<1)||(noFifo>5))
 	{
@@ -23,48 +22,59 @@ int main(void){
 	{
 		printf("Size of fifo %d: ",i);
 		fscanf(stdin,"%d",&size);
-		MyFIFOInit(&fifo[i], size);
-		if (err == -1)
+		int init_err = MyFIFOInit(&fifo[i], size);
+		if (init_err != 0)
 		{
-			printf("ERROR initializing fifo");
+			printf("ERROR initializing fifo ");
+			if (init_err == 11)
+			{
+				printf("Size error\n");
+			}
 			return 0;
 		}	
 	}
+	
 	int working_fifo=1;
 	int val;
 	while(1){
 
 		printf("\nTempering with FIFO nº%d!",working_fifo);
-		printf("\n1-Insert Value\n2-Remove value\n3-Peep oldest value\n4-FIFO occupied space\n5- Change FIFO\nChoice: ");
+		printf("\n1-Insert Value\n");
+		printf("2-Remove value\n");
+		printf("3-Peep oldest value\n");
+		printf("4-FIFO occupied space\n");
+		printf("5- Change FIFO\n");
+		printf("6- Resize FIFO\n");
+		printf("7- Exit\n");
+		printf("Choice: ");
+		
 		fscanf(stdin,"%d",&op);
+		
 		switch(op){
 			case 1://insert
 				printf("Value to insert: ");
 				fscanf(stdin,"%d",&val);
-				MyFIFOInsert(&fifo[working_fifo-1],val);
-				if(err!=0){
+				if(MyFIFOInsert(&fifo[working_fifo-1],val) !=0){
 					printf("FIFO is currently full and it is unable to insert a new value.\n");
-					break;
 				}
+				else{
 				printf("%d was added!\n",val);
+				}
 				break;
 
 			case 2://remove
-				MyFIFORemove(&fifo[working_fifo-1]);
-				if(err!=0){
+				if(MyFIFORemove(&fifo[working_fifo-1]) != 0){
 					printf("FIFO is currently empty and it is unable to remove one value.\n");
-					break;
 				}
+				else{
 				printf("FIFO oldest value has been removed!\n");
+				}
 				break;
 
 			case 3://peep
-				val=MyFIFOPeep(&fifo[working_fifo-1]);
-				if(err!=0){
+				if(MyFIFOPeep(&fifo[working_fifo-1])!=0){
 					printf("There hasnt been a value written yet!\n");
-					break;
 				}
-				printf("Oldest FIFO value: %d\n",val);
 				break;
 
 			case 4://size
@@ -73,13 +83,25 @@ int main(void){
 
 			case 5://change fifo
 				printf("\nDesired FIFO: ");
-				do{
+				fscanf(stdin,"%d",&working_fifo);
+				while(working_fifo<1 || working_fifo>noFifo){
+					printf("Non existing fifo!\n Desired FIFO: ");
 					fscanf(stdin,"%d",&working_fifo);
-				}while(working_fifo<1 || working_fifo>noFifo);
+				};
+				break;
+				
+			case 6:
+				printf("\nDesired size: ");
+				fscanf(stdin,"%d",&new_size);
+				MyFIFOResize(&fifo[working_fifo-1],new_size);
 				break;
 
-			default://leave
+			case 7://leave
 				return 0;
+				
+			default:
+				printf("Invalid Option!");
+				break;
 		}
 	}
 

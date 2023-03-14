@@ -3,56 +3,56 @@
 #include <stdlib.h>
 
 #define MAX_FIFO_SIZE 10
-int err=0;
+
 
 int MyFIFOInit(struct FIFO* fifo, int size)
 {
-	if((size<= 0)||(size>10))
-		return err=-1;
+	if((size<= 0)||(size>MAX_FIFO_SIZE))
+		return MAX_FIFO_SIZE + 1;
 	
 	fifo->values =  (int*)malloc(size*sizeof(int));
-	if (fifo->values == NULL){
-		return err=-1;	
+	if (fifo == NULL){
+		return -1;	
 	}
 	
 	fifo->size = size;
 	fifo->tail = 0;
 	fifo->head = 0;
 	fifo->count = 0;
-	return err=0;
+	return 0;
 }
 
-void MyFIFOInsert(struct FIFO*fifo, int val)
+int MyFIFOInsert(struct FIFO*fifo, int val)
 {
-	if(MyFIFOSize(fifo)==fifo->size){
-		err=-1;
-		return;
+	
+	if(fifo->head == fifo->tail && fifo->count==fifo->size){
+		return -1;
 	}
-
-	fifo->values[fifo->head]=val;
-	fifo->head = (fifo->head +1)% fifo->size;
-	fifo->count=fifo->count+1;
-	err=0;
+	fifo->values[fifo->tail] = val;
+	fifo->tail = (fifo->tail + 1) % fifo->size;
+	fifo->count = fifo->count + 1;
+	return 0;
 }
 
-void MyFIFORemove(struct FIFO* fifo)
+int MyFIFORemove(struct FIFO* fifo)
 {
-	if(MyFIFOSize(fifo)==0){
-		err=-1;
-		return;
+	if(fifo->head == fifo->tail && fifo->count== 0){
+		return -1;
 	}
-	fifo->tail = (fifo->tail+1) % fifo->size;
-	fifo->count=fifo->count-1;
-	err=0;
+	printf("\nValue removed: %d\n",fifo->values[fifo->head]);
+	fifo->head = (fifo->head + 1) % fifo->size;
+	fifo->count = fifo->count - 1;
+	return 0;
 }
 
 int MyFIFOPeep(struct FIFO* fifo)
 {	
-	if (fifo->tail == fifo->head){
-		return err=-1;
-	}	
-	err=0;	
-	return fifo->values[fifo->tail];
+	if (fifo->tail == fifo->head && fifo->count== 0){
+		return -1;
+	}
+	printf("\nOldest element: %d\n", fifo->values[fifo->head]);
+		
+	return 0;
 }
 
 int MyFIFOSize(struct FIFO* fifo)
@@ -60,4 +60,36 @@ int MyFIFOSize(struct FIFO* fifo)
 	return fifo->count;
 }
 
+int MyFIFOResize(struct FIFO* fifo, int newsize)
+{
+	if((newsize<= 0)||(newsize>MAX_FIFO_SIZE)||newsize ==fifo->size)
+		return MAX_FIFO_SIZE + 1;
+	
+	int* new_values;
+	new_values =  (int*)realloc(fifo->values,newsize*sizeof(int));
+	if (new_values == NULL){
+		return -1;	
+	}
+	
+	if(newsize <= fifo->size)
+	{
+	/*	printf("\nNEW SIZE SMALLER THAN CURRENT SIZR DATA MAY BE LOST\n");
+		
+		if(fifo->head>=newsize)
+				fifo->head = 0;
+		if(fifo->head>=newsize)
+				fifo->head = newsize - 1;
+		if(fifo->count>=newsize)
+				fifo->count = newsize;
+		fifo->size = newsize;
+		fifo->values = new_values;*/
+		
+	}
+	else{
+	fifo->size = newsize;
+	fifo->values = new_values;
+	}
+	return 0;
+	
+}
 

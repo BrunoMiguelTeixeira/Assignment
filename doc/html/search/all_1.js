@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['fifo_1',['FIFO',['../struct_f_i_f_o.html',1,'']]],
-  ['fifo_2eh_2',['fifo.h',['../fifo_8h.html',1,'']]]
+  ['count_1',['count',['../struct_f_i_f_o.html#ad43c3812e6d13e0518d9f8b8f463ffcf',1,'FIFO']]]
 ];
