@@ -3,8 +3,9 @@
 
 
 int main(void){	
+	
 	int op, exit = 0;
-	int noFifo, new_size;
+	int noFifo, new_size, err;
 	
 	printf("No. of FIFO's to be created (max.5): ");
 	scanf("%d",&noFifo);
@@ -25,8 +26,8 @@ int main(void){
 		int init_err = MyFIFOInit(&fifo[i], size);
 		if (init_err != 0)
 		{
-			printf("ERROR initializing fifo ");
-			if (init_err == 11)
+			printf("ERROR initializing fifo %d ",init_err);
+			if (init_err == ERR_SIZE)
 			{
 				printf("Size error\n");
 			}
@@ -36,7 +37,7 @@ int main(void){
 	
 	int working_fifo=1;
 	int val;
-	while(1){
+	while(exit!=1){
 
 		printf("\nTempering with FIFO nº%d!",working_fifo);
 		printf("\n1-Insert Value\n");
@@ -54,7 +55,7 @@ int main(void){
 			case 1://insert
 				printf("Value to insert: ");
 				fscanf(stdin,"%d",&val);
-				if(MyFIFOInsert(&fifo[working_fifo-1],val) !=0){
+				if(MyFIFOInsert(&fifo[working_fifo-1],val) != 0){
 					printf("FIFO is currently full and it is unable to insert a new value.\n");
 				}
 				else{
@@ -90,14 +91,19 @@ int main(void){
 				};
 				break;
 				
-			case 6:
+			case 6://resize
 				printf("\nDesired size: ");
 				fscanf(stdin,"%d",&new_size);
 				MyFIFOResize(&fifo[working_fifo-1],new_size);
 				break;
 
 			case 7://leave
-				return 0;
+				exit = 1;
+				for(int i = 0; i < noFifo;i++)
+				{
+				MyFIFOEnd(&fifo[i]);
+				}
+				break;
 				
 			default:
 				printf("Invalid Option!");
